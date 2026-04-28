@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MrCine Pro | Encontre o Filme Perfeito em 5 Segundos</title>
+  <meta name="description" content="O brasileiro perde 40 minutos escolhendo filme. O MrCine Pro usa IA para recomendar o filme perfeito em 5 segundos. Descubra seu perfil cinematográfico em 2 minutos." />
+  <meta property="og:title" content="MrCine Pro | Pare de perder tempo escolhendo filme" />
+  <meta property="og:description" content="IA que entende seu gosto. Filme perfeito em 5 segundos." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mrcine.pro" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030303;
+      --surface: #0a0a0b;
+      --surface-2: #141416;
+      --surface-3: #1c1c20;
+      --accent: #d4a853;
+      --accent-dim: rgba(212,168,83,0.15);
+      --accent-glow: rgba(212,168,83,0.3);
+      --danger: #c75050;
+      --danger-dim: rgba(199,80,80,0.12);
+      --success: #5aad6e;
+      --success-dim: rgba(90,173,110,0.12);
+      --text: #f0ece4;
+      --text-secondary: #a09a90;
+      --text-muted: #5a5650;
+      --border: rgba(255,255,255,0.06);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --ease: cubic-bezier(0.4,0,0.2,1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    /* Background Effects */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,58,237,0.08), transparent),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(244,114,182,0.05), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+    /* Typography */
+    h1, h2, h3 { font-weight: 700; line-height: 1.2; }
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+    h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+    h3 { font-size: clamp(1.1rem, 2.5vw, 1.4rem); }
+    p { color: var(--text-secondary); font-size: 1.05rem; }
+    /* Utilities */
+    .text-accent { color: var(--accent); }
+    .text-danger { color: var(--danger); }
+    .text-success { color: var(--success); }
+    .text-muted { color: var(--text-muted); }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .text-center { text-align: center; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .gap-6 { gap: 24px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+    .mb-6 { margin-bottom: 24px; }
+    .mb-8 { margin-bottom: 32px; }
+    .mb-10 { margin-bottom: 40px; }
+    .mt-4 { margin-top: 16px; }
+    .mt-6 { margin-top: 24px; }
+    .mt-8 { margin-top: 32px; }
+    .mt-10 { margin-top: 40px; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .max-w-lg { max-width: 512px; }
+    .max-w-xl { max-width: 640px; }
+    .max-w-2xl { max-width: 768px; }
+    .w-full { width: 100%; }
+    .relative { position: relative; }
+    .overflow-hidden { overflow: hidden; }
+    .rounded-full { border-radius: 9999px; }
+    .rounded-xl { border-radius: var(--radius); }
+    .rounded-lg { border-radius: var(--radius-sm); }
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .animate-fade-in-up {
+      opacity: 0;
+      animation: fadeInUp 0.7s var(--ease) forwards;
+    }
+    .animate-fade-in {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+    /* CTA Button */
+    .cta-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px 40px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--accent) 0%, #c49a3e 100%);
+      color: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
+    .cta-gold::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .cta-gold:hover::before {
+      transform: translateX(100%);
+    }
+    .cta-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(212,168,83,0.35);
+    }
+    .cta-gold-sub {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+    /* Glass Card */
+    .glass-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .glass-card-strong {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s ease infinite;
+    }
+    /* Section Styles */
+    section {
+      padding: 80px 0;
+      position: relative;
+    }
+    @media (max-width: 640px) {
+      section { padding: 60px 0; }
+    }
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 auto;
+      max-width: 800px;
+    }
+    /* Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .problem-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.3s var(--ease);
+    }
+    .problem-card:hover {
+      border-color: rgba(255,255,255,0.1);
+      transform: translateY(-4px);
+    }
+    .problem-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      background: var(--surface-2);
+    }
+    /* Feature Row */
+    .feature-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      transition: all 0.3s var(--ease);
+    }
+    .feature-row:hover {
+      border-color: rgba(212,168,83,0.2);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    /* Pricing Card */
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      position: relative;
+    }
+    .pricing-card:hover {
+      border-color: rgba(212,168,83,0.3);
+    }
+    .pricing-card.popular {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      padding: 4px 14px;
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 9999px;
+    }
+    .pricing-price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+    .pricing-daily {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    /* FAQ */
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 20px 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--text);
+      transition: background 0.2s;
+    }
+    .faq-question:hover {
+      background: var(--surface-2);
+    }
+    .faq-answer {
+      padding: 0 24px;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s var(--ease);
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .faq-item.active .faq-answer {
+      padding: 0 24px 20px;
+      max-height: 300px;
+    }
+    .faq-icon {
+      transition: transform 0.3s;
+      color: var(--accent);
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+    /* Testimonial */
+    .testimonial-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .testimonial-text {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .testimonial-author {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .stars {
+      color: var(--accent);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    /* Metric */
+    .metric-box {
+      text-align: center;
+      padding: 20px;
+    }
+    .metric-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .metric-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    /* Guarantee Box */
+    .guarantee-box {
+      background: var(--success-dim);
+      border: 1px solid rgba(90,173,110,0.2);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .guarantee-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    /* Mobile Mockup */
+    .phone-mockup {
+      width: 280px;
+      height: 560px;
+      background: var(--surface-2);
+      border-radius: 36px;
+      border: 3px solid var(--surface-3);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.6), 0 0 40px rgba(124,58,237,0.15);
+    }
+    .phone-screen {
+      position: absolute;
+      inset: 12px;
+      background: var(--bg);
+      border-radius: 28px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-notch {
+      width: 80px;
+      height: 20px;
+      background: var(--surface-2);
+      border-radius: 0 0 12px 12px;
+      margin: 0 auto;
+    }
+    .phone-content {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .phone-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .phone-poster {
+      width: 50px;
+      height: 70px;
+      background: linear-gradient(135deg, #7c3aed, #f472b6);
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .phone-text {
+      flex: 1;
+    }
+    .phone-title {
+      height: 10px;
+      background: var(--text);
+      border-radius: 3px;
+      width: 70%;
+      margin-bottom: 6px;
+    }
+    .phone-line {
+      height: 6px;
+      background: var(--text-muted);
+      border-radius: 3px;
+      margin-bottom: 4px;
+    }
+    .phone-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 0.6rem;
+      border-radius: 4px;
+      margin-top: 4px;
+    }
+    /* Step Number */
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-grid { flex-direction: column; text-align: center; }
+      .phone-mockup { margin: 0 auto; }
+      .pricing-grid { grid-template-columns: 1fr !important; }
+      .step-grid { flex-direction: column; }
+      .feature-split { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== SECTION 1: HERO ==================== -->
+<section style="min-height: 100vh; display: flex; align-items: center; padding-top: 40px;">
+  <div class="container">
+    <div class="hero-grid flex items-center gap-10" style="justify-content: space-between;">
+
+      <!-- Left: Copy -->
+      <div class="max-w-xl" style="flex: 1;">
+        <div class="badge mb-6 animate-fade-in-up">
+          <span class="badge-dot"></span>
+          <span>12.847 brasileiros já descobriram seu perfil</span>
+        </div>
+
+        <h1 class="mb-4 animate-fade-in-up delay-100" style="color: var(--text);">
+          Você ainda perde <span class="text-accent">40 minutos</span> escolhendo filme?
+        </h1>
+
+        <p class="mb-6 animate-fade-in-up delay-200" style="font-size: 1.15rem; line-height: 1.7;">
+          O algoritmo da Netflix não te conhece. Ele te empurra o que todo mundo assiste. 
+          E você fica rolando, rolando, rolando... até desistir ou reassistir algo que já viu.
+        </p>
+
+        <div class="glass-card-strong p-5 mb-8 animate-fade-in-up delay-300" style="max-width: 480px;">
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;">
+            <span style="color: var(--accent);">→</span> O brasileiro médio perde <strong style="color: var(--text);">26 horas por ano</strong> só escolhendo o que assistir.<br><br>
+            <span style="color: var(--accent);">→</span> Isso é <strong style="color: var(--text);">3 dias úteis</strong> de vida. Só rolando catálogo.
+          </p>
+        </div>
+
+        <a href="https://mrcine.pro/quiz" class="cta-gold animate-fade-in-up delay-400" style="margin-bottom: 12px;">
+          Descobrir Meu Perfil em 2 Minutos
+          <span class="cta-gold-sub">Grátis. Sem cadastro para começar.</span>
+        </a>
+
+        <p class="animate-fade-in-up delay-500" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;">
+          14 perguntas rápidas. Seus dados não são vendidos.
+        </p>
+      </div>
+
+      <!-- Right: Phone Mockup -->
+      <div class="animate-fade-in-up delay-300" style="flex-shrink: 0;">
+        <div class="phone-mockup" style="animation: float 6s ease-in-out infinite;">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="phone-content">
+              <div style="text-align: center; margin-bottom: 8px;">
+                <p style="font-size: 0.7rem; color: var(--accent); font-weight: 600;">ORÁCULO DE IA</p>
+                <p style="font-size: 0.6rem; color: var(--text-muted);">"Quero um filme de suspense pra hoje"</p>
+              </div>
+              <div class="phone-card">
+                <div class="phone-poster" style="background: linear-gradient(135deg, #dc2626, #7c3aed);"></div>
+                <div class="phone-text">
+                  <div class="phone-title" style="width: 60%;"></div>
+                  <div class="phone-line" style="width: 40%;"></div>
+                  <span class="phone-badge">98% MATCH</span>
+                </div>
+              </div>
+              <div class="phone-card">
+                <div class="phone-poster" style="background: linear-gradient(135deg, #7c3aed, #f472b6);"></div>
+                <div class="phone-text">
+                  <div class="phone-title" style="width: 55%;"></div>
+                  <div class="phone-line" style="width: 35%;"></div>
+                  <span class="phone-badge">95% MATCH</span>
+                </div>
+              </div>
+              <div class="phone-card">
+                <div class="phone-poster" style="background: linear-gradient(135deg, #059669, #7c3aed);"></div>
+                <div class="phone-text">
+                  <div class="phone-title" style="width: 65%;"></div>
+                  <div class="phone-line" style="width: 45%;"></div>
+                  <span class="phone-badge">92% MATCH</span>
+                </div>
+              </div>
+              <div style="margin-top: auto; text-align: center; padding: 8px;">
+                <div style="height: 36px; background: var(--accent); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 0.7rem; font-weight: 600;">
+                  Ver onde assistir →
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 2: O PROBLEMA ==================== -->
+<section>
+  <div class="container">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="font-mono text-accent mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">O Problema</p>
+      <h2 class="mb-4">Por que escolher filme virou tão difícil?</h2>
+      <p>Não é culpa sua. O sistema foi feito para te manter rolando, não para te ajudar a escolher.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="problem-card animate-fade-in-up">
+        <div class="problem-icon">⏱️</div>
+        <h3 class="mb-2" style="color: var(--text);">A Paralisia de Decisão</h3>
+        <p style="font-size: 0.92rem;">500 filmes no catálogo, 40 minutos rolando, zero escolha. Seu cérebro desliga diante de muitas opções. Isso tem nome: <em>Analysis Paralysis</em>.</p>
+      </div>
+
+      <div class="problem-card animate-fade-in-up delay-100">
+        <div class="problem-icon">🤖</div>
+        <h3 class="mb-2" style="color: var(--text);">O Algoritmo que Não Te Ouve</h3>
+        <p style="font-size: 0.92rem;">A Netflix recomenda o que ela quer vender, não o que você quer sentir. Você assistiu um documentário uma vez? Agora seu feed é só documentário.</p>
+      </div>
+
+      <div class="problem-card animate-fade-in-up delay-200">
+        <div class="problem-icon">😴</div>
+        <h3 class="mb-2" style="color: var(--text);">A Noite Perdida</h3>
+        <p style="font-size: 0.92rem;">Você escolhe um filme chato, dorme no meio, acorda frustrado. Sua noite de descanso virou desperdício de tempo e dinheiro.</p>
+      </div>
+
+      <div class="problem-card animate-fade-in-up delay-300">
+        <div class="problem-icon">💔</div>
+        <h3 class="mb-2" style="color: var(--text);">A Briga pelo Controle</h3>
+        <p style="font-size: 0.92rem;">"Você escolhe." "Não, você escolhe." Sofá virou campo de batalha. E no fim, ninguém fica satisfeito. A noite de filme virou estresse.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 3: A SOLUÇÃO ==================== -->
+<section>
+  <div class="container">
+    <div class="feature-split flex items-center gap-12" style="justify-content: space-between;">
+
+      <!-- Left: Features -->
+      <div style="flex: 1;">
+        <p class="font-mono text-accent mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">A Solução</p>
+        <h2 class="mb-4">Encontre o filme perfeito em 5 segundos.<br><span class="text-accent">Não em 40 minutos.</span></h2>
+        <p class="mb-8">O MrCine não adivinha. Ele <strong style="color: var(--text);">aprende</strong> com você. Cada avaliação torna o Oráculo mais preciso.</p>
+
+        <div class="feature-row">
+          <div class="feature-icon">🎯</div>
+          <div>
+            <h3 style="color: var(--text); margin-bottom: 4px;">Oráculo de IA</h3>
+            <p style="font-size: 0.92rem;">Responda como está seu dia, com quem está, qual seu humor. A IA recomenda 3 filmes com <strong style="color: var(--text);">94% de taxa de acerto</strong>.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">🎮</div>
+          <div>
+            <h3 style="color: var(--text); margin-bottom: 4px;">Gamificação que Prende</h3>
+            <p style="font-size: 0.92rem;">Ganhe XP ao avaliar filmes. Suba de nível de "Novato" a "Entidade Cósmica". Cinema virou jogo — e você não para.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">👥</div>
+          <div>
+            <h3 style="color: var(--text); margin-bottom: 4px;">Acordo de Paz</h3>
+            <p style="font-size: 0.92rem;">Grupo de amigos com gostos diferentes? O Oráculo encontra o filme que agrada a todos. Chega de briga pelo controle remoto.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">🔓</div>
+          <div>
+            <h3 style="color: var(--text); margin-bottom: 4px;">Código Secreto</h3>
+            <p style="font-size: 0.92rem;">Posts do Instagram e TikTok com códigos que desbloqueiam listas exclusivas no app. Cinema + caça ao tesouro = vício saudável.</p>
+          </div>
+        </div>
+
+        <a href="https://mrcine.pro/quiz" class="cta-gold mt-6">
+          Fazer o Quiz Grátis →
+        </a>
+      </div>
+
+      <!-- Right: Visual -->
+      <div style="flex-shrink: 0;" class="animate-fade-in-up">
+        <div class="glass-card-strong p-6" style="max-width: 360px;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <p style="font-size: 0.8rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Seu Perfil Cinematográfico</p>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Baseado em 14 perguntas + IA</p>
+          </div>
+
+          <div style="background: var(--surface-2); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px;">
+            <div style="font-size: 3rem; margin-bottom: 8px;">🗺️</div>
+            <p style="font-weight: 700; color: var(--text); font-size: 1.1rem;">Explorador Cinematográfico</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">8% dos usuários têm esse perfil</p>
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <div style="flex: 1; background: var(--surface-2); border-radius: 8px; padding: 10px; text-align: center;">
+              <p style="font-size: 0.7rem; color: var(--text-muted);">Match</p>
+              <p style="font-weight: 700; color: var(--success);">94%</p>
+            </div>
+            <div style="flex: 1; background: var(--surface-2); border-radius: 8px; padding: 10px; text-align: center;">
+              <p style="font-size: 0.7rem; color: var(--text-muted);">Filmes</p>
+              <p style="font-weight: 700; color: var(--accent);">5.200+</p>
+            </div>
+            <div style="flex: 1; background: var(--surface-2); border-radius: 8px; padding: 10px; text-align: center;">
+              <p style="font-size: 0.7rem; color: var(--text-muted);">Nível</p>
+              <p style="font-weight: 700; color: var(--text);">7</p>
+            </div>
+          </div>
+
+          <div style="background: linear-gradient(135deg, var(--accent-dim), transparent); border: 1px solid rgba(212,168,83,0.2); border-radius: 8px; padding: 12px;">
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">💡 <strong style="color: var(--text);">Dica do Oráculo:</strong> Você ama descobrir joias escondidas. Experimente "Cidade dos Sonhos" (2006) — 98% de compatibilidade.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 4: COMO FUNCIONA ==================== -->
+<section>
+  <div class="container">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="font-mono text-accent mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">Como Funciona</p>
+      <h2 class="mb-4">3 passos. 2 minutos. Filme perfeito.</h2>
+      <p>Sem complicação. Sem rolar catálogo. Sem briga.</p>
+    </div>
+
+    <div class="step-grid flex gap-8" style="justify-content: center;">
+
+      <div class="flex flex-col items-center text-center" style="max-width: 300px;">
+        <div class="step-num mb-4">01</div>
+        <h3 class="mb-2" style="color: var(--text);">Responda o Quiz</h3>
+        <p style="font-size: 0.92rem;">14 perguntas rápidas sobre seu gosto, hábitos e frustrações. <strong style="color: var(--text);">Sem cadastro inicial.</strong></p>
+      </div>
+
+      <div class="flex flex-col items-center text-center" style="max-width: 300px;">
+        <div class="step-num mb-4">02</div>
+        <h3 class="mb-2" style="color: var(--text);">Receba Seu Perfil</h3>
+        <p style="font-size: 0.92rem;">Descubra se você é Explorador, Emocional, Crítico, Maratonista ou Nostálgico. Com filmes selecionados para o seu perfil.</p>
+      </div>
+
+      <div class="flex flex-col items-center text-center" style="max-width: 300px;">
+        <div class="step-num mb-4">03</div>
+        <h3 class="mb-2" style="color: var(--text);">Use o Oráculo</h3>
+        <p style="font-size: 0.92rem;">Pergunte à IA: <em>"Quero um filme de suspense para assistir com minha mãe."</em> Ela responde em 5 segundos. Com nota, sinopse e onde assistir.</p>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-10">
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">É grátis começar. PRO desbloqueia o Oráculo ilimitado.</p>
+      <a href="https://mrcine.pro/quiz" class="cta-gold">
+        Começar Meu Quiz Agora →
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 5: PROVA SOCIAL ==================== -->
+<section>
+  <div class="container">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="font-mono text-accent mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">Prova Social</p>
+      <h2 class="mb-4">Quem usa, não volta a rolar catálogo</h2>
+    </div>
+
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-bottom: 48px;">
+      <div class="testimonial-card animate-fade-in-up">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Finalmente parei de brigar com meu namorado pra escolher filme. O app sempre acerta o que a gente quer ver. O Acordo de Paz salvou nosso sábado à noite."</p>
+        <p class="testimonial-author">— Ana P., São Paulo</p>
+      </div>
+
+      <div class="testimonial-card animate-fade-in-up delay-100">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"O Oráculo me recomendou 3 filmes perfeitos em 5 segundos. Eu demoraria 40 minutos pra achar um desses sozinho. O plano PRO se paga no primeiro mês."</p>
+        <p class="testimonial-author">— Lucas M., Rio de Janeiro</p>
+      </div>
+
+      <div class="testimonial-card animate-fade-in-up delay-200">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"A função de mostrar em qual streaming o filme está salvou minha vida. Não preciso mais abrir 4 apps diferentes. Vale cada centavo do PRO."</p>
+        <p class="testimonial-author">— Juliana R., Curitiba</p>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="glass-card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0;">
+      <div class="metric-box">
+        <p class="metric-number">12.847</p>
+        <p class="metric-label">Perfis Criados</p>
+      </div>
+      <div class="metric-box">
+        <p class="metric-number">4.9★</p>
+        <p class="metric-label">Nota Média</p>
+      </div>
+      <div class="metric-box">
+        <p class="metric-number">94%</p>
+        <p class="metric-label">Taxa de Acerto</p>
+      </div>
+      <div class="metric-box">
+        <p class="metric-number">26h</p>
+        <p class="metric-label">Horas Economizadas/mês</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 6: OFERTA ==================== -->
+<section>
+  <div class="container">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="font-mono text-accent mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">Preços</p>
+      <h2 class="mb-4">Menos que um café por semana.<br>Muito mais que um algoritmo.</h2>
+    </div>
+
+    <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto;">
+
+      <!-- Mensal -->
+      <div class="pricing-card">
+        <h3 style="color: var(--text); margin-bottom: 8px;">Mensal</h3>
+        <p class="pricing-price">R$ 9,00<span style="font-size: 1rem; color: var(--text-muted); font-weight: 400;">/mês</span></p>
+        <p class="pricing-daily">R$ 0,30 por dia</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 12px;">Para testar sem compromisso</p>
+      </div>
+
+      <!-- Trimestral -->
+      <div class="pricing-card popular">
+        <div class="pricing-badge">Mais Popular</div>
+        <h3 style="color: var(--text); margin-bottom: 8px; margin-top: 8px;">Trimestral</h3>
+        <p class="pricing-price">R$ 24,00<span style="font-size: 1rem; color: var(--text-muted); font-weight: 400;">/3 meses</span></p>
+        <p class="pricing-daily">R$ 0,27 por dia</p>
+        <p style="font-size: 0.85rem; color: var(--success); margin-top: 12px; font-weight: 500;">Economia de 11%</p>
+      </div>
+
+      <!-- Anual -->
+      <div class="pricing-card">
+        <h3 style="color: var(--text); margin-bottom: 8px;">Anual</h3>
+        <p class="pricing-price">R$ 69,00<span style="font-size: 1rem; color: var(--text-muted); font-weight: 400;">/ano</span></p>
+        <p class="pricing-daily">R$ 0,19 por dia — menos que um chiclete</p>
+        <p style="font-size: 0.85rem; color: var(--success); margin-top: 12px; font-weight: 500;">Economia de 36%</p>
+      </div>
+
+    </div>
+
+    <!-- Benefits -->
+    <div class="glass-card mt-8 mx-auto" style="max-width: 700px; padding: 28px;">
+      <p style="font-weight: 600; color: var(--text); margin-bottom: 16px; text-align: center;">O que você desbloqueia no PRO:</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+        <div class="flex items-center gap-3">
+          <span style="color: var(--success);">✓</span>
+          <span style="font-size: 0.92rem; color: var(--text-secondary);">Swipes ilimitados</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span style="color: var(--success);">✓</span>
+          <span style="font-size: 0.92rem; color: var(--text-secondary);">Oráculo de IA ilimitado</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span style="color: var(--success);">✓</span>
+          <span style="font-size: 0.92rem; color: var(--text-secondary);">Dicas diárias personalizadas</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span style="color: var(--success);">✓</span>
+          <span style="font-size: 0.92rem; color: var(--text-secondary);">Badge PRO no perfil</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span style="color: var(--success);">✓</span>
+          <span style="font-size: 0.92rem; color: var(--text-secondary);">Grupo de amigos ilimitado</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span style="color: var(--success);">✓</span>
+          <span style="font-size: 0.92rem; color: var(--text-secondary);">Códigos secretos exclusivos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guarantee -->
+    <div class="guarantee-box mt-8 mx-auto" style="max-width: 700px;">
+      <div class="guarantee-icon">🛡️</div>
+      <div>
+        <p style="font-weight: 600; color: var(--text); margin-bottom: 6px;">Garantia de 7 Dias — Reembolso Total</p>
+        <p style="font-size: 0.92rem; color: var(--text-secondary);">Se você não sentir que economizou tempo e encontrou filmes melhores na primeira semana, devolvemos 100%. Sem perguntas. Sem burocracia. É só mandar um e-mail para <a href="mailto:suporte@mrcine.pro" style="color: var(--accent);">suporte@mrcine.pro</a></p>
+      </div>
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="https://mrcine.pro/pricing" class="cta-gold" style="font-size: 1.1rem; padding: 20px 48px;">
+        Começar Meu Acesso PRO →
+        <span class="cta-gold-sub">Pagamento seguro via Stripe. Cancele quando quiser.</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 7: FAQ ==================== -->
+<section>
+  <div class="container">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="font-mono text-accent mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">FAQ</p>
+      <h2 class="mb-4">Ainda com dúvidas? A gente antecipa:</h2>
+    </div>
+
+    <div class="max-w-2xl mx-auto">
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>E se o Oráculo recomendar filmes ruins?</span>
+          <span class="faq-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <p>O Oráculo aprende com suas avaliações. Quanto mais você usa, mais preciso fica. E se errar? Você tem <strong style="color: var(--text);">7 dias de garantia</strong>. Risco zero.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>Vão me mandar spam no e-mail/WhatsApp?</span>
+          <span class="faq-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <p>Não. Enviamos <strong style="color: var(--text);">1 e-mail por semana</strong> com dicas de filmes. WhatsApp é opcional e também 1x por semana. Se encher sua caixa, você pode cancelar em 1 clique.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>R$ 9 é caro para um app de recomendação?</span>
+          <span class="faq-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <p>Você paga R$ 9 e <strong style="color: var(--text);">economiza 26 horas por mês</strong>. Seu tempo livre vale mais que R$ 0,33 por dia. E o gratuito já resolve 70% do problema — teste antes de comprar.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>É fácil cancelar?</span>
+          <span class="faq-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <p>Extremamente. Entre no <strong style="color: var(--text);">portal do Stripe em 1 clique</strong>, cancele quando quiser. Não precisa mandar e-mail, não precisa ligar. Você controla tudo.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>Meus dados estão seguros?</span>
+          <span class="faq-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <p>Sim. Usamos <strong style="color: var(--text);">Supabase com criptografia</strong>, Stripe para pagamentos (não armazenamos seu cartão) e estamos em conformidade com a LGPD. Seus dados são seus.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="https://mrcine.pro/quiz" class="cta-gold" style="font-size: 1.1rem; padding: 20px 48px;">
+        Fazer o Quiz Gratuito →
+        <span class="cta-gold-sub">2 minutos. Sem compromisso.</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer style="border-top: 1px solid var(--border); padding: 40px 0;">
+  <div class="container">
+    <div class="text-center">
+      <p style="font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 8px;">MrCine Pro</p>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Seu Guia de Cinema com IA</p>
+      <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 16px;">
+        <a href="https://instagram.com/mrcine" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">Instagram</a>
+        <a href="https://tiktok.com/@mrcine" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">TikTok</a>
+        <a href="https://mrcine.pro/terms" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">Termos</a>
+        <a href="https://mrcine.pro/privacy" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">Privacidade</a>
+      </div>
+      <p style="font-size: 0.75rem; color: var(--text-muted);">© 2026 MrCine Pro. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll Animation Observer -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1)';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
